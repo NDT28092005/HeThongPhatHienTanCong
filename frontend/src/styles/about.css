@@ -1,0 +1,1148 @@
+/* About Page Styles */
+:root {
+  --primary-color: #5D7B6F;
+  --secondary-color: #A4C3A2;
+  --accent-color: #B0D4B8;
+  --light-color: #EAE7D6;
+  --extra-light-color: #D7F9FA;
+  --text-dark: #333;
+  --text-light: #666;
+  --border-color: #c4d7d0;
+  --shadow: 0 4px 15px rgba(93, 123, 111, 0.08);
+  --shadow-hover: 0 8px 25px rgba(93, 123, 111, 0.12);
+  --transition: all 0.3s ease;
+  
+  /* Gradient variables */
+  --gradient-primary: linear-gradient(135deg, #5D7B6F 0%, #A4C3A2 100%);
+  --gradient-secondary: linear-gradient(135deg, #A4C3A2 0%, #B0D4B8 100%);
+  --gradient-accent: linear-gradient(135deg, #B0D4B8 0%, #D7F9FA 100%);
+  --gradient-light: linear-gradient(135deg, #EAE7D6 0%, #D7F9FA 100%);
+  --gradient-button: linear-gradient(135deg, #5D7B6F 0%, #6b8d80 100%);
+  --gradient-button-hover: linear-gradient(135deg, #4a6359 0%, #5D7B6F 100%);
+}
+
+/* Global Styles */
+.about-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+.about-page svg {
+    color: #666;
+}
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 0 15px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--text-light);
+  max-width: 90%;
+  margin: 15px auto 0;
+  line-height: 1.6;
+}
+
+/* Hero Section - Enhanced Mobile */
+.about-hero {
+  padding: 60px 0;
+  background: var(--gradient-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  padding: 20px 15px;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-icon {
+  color: var(--secondary-color);
+  font-size: 2rem;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+.hero-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  max-width: 95%;
+  margin: 0 auto;
+}
+
+.hero-image {
+  position: relative;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  padding: 0 15px;
+}
+
+.floating-card {
+  position: absolute;
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+  z-index: 1;
+  min-width: 120px;
+  text-align: center;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.floating-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--shadow-hover);
+}
+
+.floating-card svg {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.floating-card span {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+}
+
+.card-1 {
+  top: 15%;
+  left: 20%;
+  background: var(--gradient-accent);
+  animation-name: float-mobile-1;
+}
+
+.card-2 {
+  top: 50%;
+  left: 10%;
+  background: var(--gradient-secondary);
+  animation-name: float-mobile-2;
+}
+
+.card-3 {
+  top: 30%;
+  right: 15%;
+  background: var(--gradient-light);
+  animation-name: float-mobile-3;
+}
+
+/* Features Section - Enhanced Mobile */
+.about-features {
+  padding: 60px 0;
+  background: white;
+}
+
+.feature-card {
+  border: none;
+  border-radius: 15px;
+  padding: 25px 15px;
+  text-align: center;
+  height: 100%;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  background: white;
+  margin-bottom: 20px;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 15px;
+  background: var(--gradient-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.feature-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+}
+
+.feature-description {
+  color: var(--text-light);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Benefits Section - Enhanced Mobile */
+.about-benefits {
+  padding: 60px 0;
+  background: var(--gradient-light);
+}
+
+.benefits-content {
+  padding: 20px 15px;
+  text-align: center;
+}
+
+.benefits-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.benefits-intro {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin-bottom: 25px;
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  max-width: 95%;
+  margin: 0 auto;
+}
+
+.benefits-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: left;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.benefits-list li:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(3px);
+}
+
+.check-icon {
+  color: var(--secondary-color);
+  margin-right: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.benefits-image {
+  position: relative;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding: 0 15px;
+}
+
+.benefits-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px 20px;
+  box-shadow: var(--shadow-hover);
+  max-width: 90%;
+  text-align: center;
+}
+
+.benefits-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.benefits-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+}
+
+.benefits-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+/* Process Section - Enhanced Mobile */
+.about-process {
+  padding: 60px 0;
+  background: white;
+}
+
+.process-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px 15px;
+  text-align: center;
+  height: 100%;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  position: relative;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.process-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--secondary-color);
+}
+
+.process-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35px;
+  height: 35px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(93, 123, 111, 0.3);
+}
+
+.process-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 15px 0 10px;
+}
+
+.process-description {
+  color: var(--text-light);
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+/* Mission Section - Enhanced Mobile */
+.about-mission {
+  padding: 60px 0;
+  background: var(--gradient-light);
+}
+
+.mission-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: var(--shadow-hover);
+  margin: 0 15px;
+}
+
+.mission-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.mission-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.mission-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Mobile Animations */
+@keyframes float-mobile-1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-8px) rotate(-2deg);
+  }
+}
+
+@keyframes float-mobile-2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes float-mobile-3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-6px) rotate(-2deg);
+  }
+}
+
+/* Touch-friendly interactions */
+.feature-card:active,
+.process-card:active,
+.benefits-card:active {
+  transform: scale(0.98);
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 576px) {
+  /* Improved spacing for mobile */
+  .about-hero,
+  .about-features,
+  .about-benefits,
+  .about-process,
+  .about-mission {
+    padding: 50px 0;
+  }
+  
+  /* Better typography for mobile */
+  .about-hero {
+    padding: 30px 0 20px; /* Giảm padding tổng thể */
+  }
+  
+  .hero-content {
+    padding: 10px 10px 0; /* Giảm padding bottom */
+  }
+  
+  .hero-title {
+    font-size: 1.8rem;
+    margin-bottom: 8px; /* Giảm margin */
+  }
+  
+  .hero-icon {
+    font-size: 1.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 8px; /* Giảm margin */
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+    margin-bottom: 5px; /* Giảm margin bottom */
+    line-height: 1.5;
+  }
+  
+  .hero-image {
+    height: 180px; /* Giảm chiều cao */
+    margin-top: 5px; /* Giảm margin top đáng kể */
+    padding: 0 15px;
+  }
+  
+  .floating-card {
+    min-width: 85px;
+    padding: 10px 8px;
+  }
+  
+  .floating-card svg {
+    font-size: 1.2rem;
+  }
+  
+  .floating-card span {
+    font-size: 0.8rem;
+  }
+  
+  .card-1 {
+    top: 25%;
+    left: 10%;
+  }
+  
+  .card-2 {
+    top: 50%;
+    left: 20%;
+  }
+  
+  .card-3 {
+    top: 30%;
+    right: 10%;
+  }
+  
+  .about-hero::before {
+    width: 150px;
+    height: 150px;
+    top: -30px;
+    right: -30px;
+  }
+  
+  .about-hero::after {
+    width: 120px;
+    height: 120px;
+    bottom: -20px;
+    left: -20px;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  /* Enhanced card designs */
+  .feature-card,
+  .process-card {
+    border-radius: 12px;
+    padding: 20px 15px;
+  }
+  
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+  
+  .process-number {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+    top: -12px;
+  }
+  
+  /* Better floating cards for mobile */
+  .floating-card {
+    min-width: 100px;
+    padding: 12px 8px;
+  }
+  
+  .floating-card svg {
+    font-size: 1.3rem;
+  }
+  
+  .floating-card span {
+    font-size: 0.8rem;
+  }
+  
+  /* Improved benefits list */
+  .benefits-list li {
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  
+  .check-icon {
+    font-size: 0.9rem;
+    margin-right: 10px;
+  }
+  
+  /* Better mission section */
+  .mission-content {
+    padding: 25px 15px;
+    border-radius: 12px;
+  }
+  
+  .mission-icon {
+    font-size: 2rem;
+  }
+  
+  .mission-text {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+  
+  /* Enhanced image containers */
+  .hero-image,
+  .benefits-image {
+    height: 300px;
+  }
+  
+  /* Better button spacing */
+  .mission-content {
+    margin: 0 10px;
+  }
+}
+
+/* Ultra-small mobile devices */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 1.6rem;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+  
+  .floating-card {
+    min-width: 85px;
+    padding: 10px 6px;
+  }
+  
+  .floating-card svg {
+    font-size: 1.2rem;
+  }
+  
+  .floating-card span {
+    font-size: 0.75rem;
+  }
+  
+  .feature-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+  
+  .process-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Responsive for max-width 579px */
+@media (max-width: 579px) {
+  .about-hero,
+  .about-features,
+  .about-benefits,
+  .about-process,
+  .about-mission {
+    padding: 40px 0;
+  }
+  
+  .hero-content {
+    padding: 15px 10px;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+  
+  .hero-icon {
+    font-size: 1.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0 5px;
+  }
+  
+  .hero-image {
+    height: 200px;
+    margin-top: 20px;
+  }
+  
+  .section-header {
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  
+  .section-subtitle {
+    font-size: 0.9rem;
+    padding: 0 10px;
+  }
+  
+  .floating-card {
+    min-width: 90px;
+    padding: 10px 8px;
+  }
+  
+  .floating-card svg {
+    font-size: 1.1rem;
+  }
+  
+  .floating-card span {
+    font-size: 0.75rem;
+  }
+  
+  .card-1 {
+    top: 20%;
+    left: 8%;
+  }
+  
+  .card-2 {
+    top: 50%;
+    left: 15%;
+  }
+  
+  .card-3 {
+    top: 30%;
+    right: 8%;
+  }
+  
+  .feature-card,
+  .process-card {
+    padding: 18px 12px;
+    margin-bottom: 15px;
+  }
+  
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  
+  .feature-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .feature-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  .benefits-content {
+    padding: 15px 10px;
+  }
+  
+  .benefits-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .benefits-intro {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    padding: 0 5px;
+  }
+  
+  .benefits-list {
+    max-width: 100%;
+  }
+  
+  .benefits-list li {
+    font-size: 0.85rem;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .check-icon {
+    font-size: 0.85rem;
+    margin-right: 8px;
+  }
+  
+  .benefits-image {
+    height: 280px;
+    margin-top: 20px;
+  }
+  
+  .benefits-card {
+    padding: 20px 15px;
+  }
+  
+  .benefits-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  
+  .benefits-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .benefits-card p {
+    font-size: 0.85rem;
+  }
+  
+  .process-card {
+    padding: 18px 12px;
+  }
+  
+  .process-number {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+    top: -12px;
+  }
+  
+  .process-title {
+    font-size: 1rem;
+    margin: 12px 0 8px;
+  }
+  
+  .process-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  .mission-content {
+    padding: 20px 15px;
+    margin: 0 10px;
+  }
+  
+  .mission-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  
+  .mission-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .mission-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+}
+
+/* Responsive for max-width 390px */
+@media (max-width: 390px) {
+  .about-hero,
+  .about-features,
+  .about-benefits,
+  .about-process,
+  .about-mission {
+    padding: 30px 0;
+  }
+  
+  .hero-content {
+    padding: 10px 8px;
+  }
+  
+  .hero-title {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .hero-icon {
+    font-size: 1.3rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .hero-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 0 3px;
+  }
+  
+  .hero-image {
+    height: 180px;
+    margin-top: 15px;
+  }
+  
+  .section-header {
+    margin-bottom: 25px;
+    padding: 0 8px;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  
+  .section-title::after {
+    width: 50px;
+    height: 2px;
+    bottom: -8px;
+  }
+  
+  .section-subtitle {
+    font-size: 0.85rem;
+    padding: 0 8px;
+    line-height: 1.5;
+  }
+  
+  .floating-card {
+    min-width: 80px;
+    padding: 8px 6px;
+  }
+  
+  .floating-card svg {
+    font-size: 1rem;
+  }
+  
+  .floating-card span {
+    font-size: 0.7rem;
+  }
+  
+  .card-1 {
+    top: 15%;
+    left: 5%;
+    min-width: 75px;
+  }
+  
+  .card-2 {
+    top: 50%;
+    left: 10%;
+    min-width: 75px;
+  }
+  
+  .card-3 {
+    top: 30%;
+    right: 5%;
+    min-width: 75px;
+  }
+  
+  .feature-card,
+  .process-card {
+    padding: 15px 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  
+  .feature-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .feature-title {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+  
+  .feature-description {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .benefits-content {
+    padding: 12px 8px;
+  }
+  
+  .benefits-title {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  
+  .benefits-intro {
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+    padding: 0 3px;
+    line-height: 1.5;
+  }
+  
+  .benefits-list {
+    max-width: 100%;
+  }
+  
+  .benefits-list li {
+    font-size: 0.8rem;
+    padding: 6px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  
+  .check-icon {
+    font-size: 0.8rem;
+    margin-right: 6px;
+    margin-top: 1px;
+  }
+  
+  .benefits-image {
+    height: 250px;
+    margin-top: 15px;
+  }
+  
+  .benefits-card {
+    padding: 18px 12px;
+    max-width: 95%;
+  }
+  
+  .benefits-icon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .benefits-card h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .benefits-card p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  
+  .process-card {
+    padding: 15px 10px;
+  }
+  
+  .process-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    top: -10px;
+  }
+  
+  .process-title {
+    font-size: 0.95rem;
+    margin: 10px 0 6px;
+  }
+  
+  .process-description {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .mission-content {
+    padding: 18px 12px;
+    margin: 0 8px;
+    border-radius: 12px;
+  }
+  
+  .mission-icon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .mission-title {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  
+  .mission-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .about-hero {
+    padding: 40px 0;
+  }
+  
+  .hero-image {
+    height: 250px;
+    margin-top: 30px;
+  }
+  
+  .benefits-image {
+    height: 250px;
+    margin-top: 20px;
+  }
+  
+  .floating-card {
+    min-width: 110px;
+    padding: 12px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .feature-card:hover,
+  .process-card:hover,
+  .benefits-card:hover {
+    transform: none;
+  }
+  
+  .feature-card:active,
+  .process-card:active,
+  .benefits-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Smooth scrolling for mobile */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  .about-page {
+    scroll-behavior: smooth;
+  }
+}

@@ -1,0 +1,707 @@
+/* Payment QR Page Styles */
+:root {
+  --primary-color: #5D7B6F;
+  --secondary-color: #A4C3A2;
+  --accent-color: #B0D4B8;
+  --light-color: #EAE7D6;
+  --extra-light-color: #D7F9FA;
+  --text-dark: #333;
+  --text-light: #666;
+  --border-color: #c4d7d0;
+  --shadow: 0 4px 15px rgba(93, 123, 111, 0.08);
+  --shadow-hover: 0 8px 25px rgba(93, 123, 111, 0.12);
+  --transition: all 0.3s ease;
+  
+  /* Status colors */
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  
+  /* Gradient variables */
+  --gradient-primary: linear-gradient(135deg, #5D7B6F 0%, #A4C3A2 100%);
+  --gradient-secondary: linear-gradient(135deg, #A4C3A2 0%, #B0D4B8 100%);
+  --gradient-accent: linear-gradient(135deg, #B0D4B8 0%, #D7F9FA 100%);
+  --gradient-light: linear-gradient(135deg, #EAE7D6 0%, #D7F9FA 100%);
+  --gradient-button: linear-gradient(135deg, #5D7B6F 0%, #6b8d80 100%);
+  --gradient-button-hover: linear-gradient(135deg, #4a6359 0%, #5D7B6F 100%);
+}
+
+/* Payment QR Page Container */
+.payment-qr-page {
+  min-height: calc(100vh - 200px);
+  background: var(--gradient-light);
+  padding: 40px 0;
+}
+
+/* Payment Header */
+.payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  background: var(--extra-light-color);
+  transform: translateX(-2px);
+}
+
+.payment-header h1 {
+  color: var(--primary-color);
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Payment Layout */
+.payment-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* QR Section */
+.qr-section {
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 30px;
+  height: fit-content;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-header h2 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.qr-image-wrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.qr-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.qr-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-indicator svg {
+  transition: var(--transition);
+}
+
+.status-indicator.paid svg {
+  color: var(--success-color);
+}
+
+.status-indicator.pending svg {
+  color: var(--warning-color);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.qr-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+.download-btn {
+  background: var(--gradient-button);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(93, 123, 111, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.download-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.download-btn:hover {
+  background: var(--gradient-button-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(93, 123, 111, 0.4);
+}
+
+.download-btn:hover::before {
+  left: 100%;
+}
+
+.download-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(93, 123, 111, 0.3);
+}
+
+.download-btn:active::before {
+  left: 0;
+  transition: left 0.3s ease;
+}
+
+/* Thêm hiệu ứng tải về */
+.download-btn.downloading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.download-btn.downloading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.action-btn {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.action-btn:hover {
+  background: var(--extra-light-color);
+  transform: translateY(-2px);
+}
+
+.payment-status {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.status-badge.paid {
+  background: rgba(40, 167, 69, 0.1);
+  color: var(--success-color);
+}
+
+.status-badge.pending {
+  background: rgba(255, 193, 7, 0.1);
+  color: var(--warning-color);
+}
+
+.countdown-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.countdown-timer {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.countdown-bar {
+  width: 100%;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.countdown-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  transition: width 1s linear;
+}
+
+.qr-instructions {
+  margin-top: 30px;
+}
+
+.qr-instructions h3 {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.instruction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.instruction-item p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Order Details Section */
+.order-details {
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 30px;
+  height: fit-content;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.info-value {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.info-value.code {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.copy-btn {
+  background: var(--extra-light-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.copy-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.copy-btn.copied {
+  background: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+.info-value.amount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.info-value.status {
+  font-weight: 600;
+}
+
+.info-value.status.paid {
+  color: var(--success-color);
+}
+
+.info-value.status.pending {
+  color: var(--warning-color);
+}
+
+/* Payment Methods */
+.payment-methods {
+  margin-top: 30px;
+}
+
+.payment-methods h3 {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.payment-method-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: var(--transition);
+}
+
+.payment-method:hover {
+  border-color: var(--primary-color);
+  background: var(--extra-light-color);
+}
+
+.method-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.method-details h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--text-dark);
+}
+
+.method-details p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* Support Section */
+.support-section {
+  margin-top: 30px;
+  background: var(--gradient-light);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.support-info {
+  text-align: center;
+}
+
+.support-info p {
+  margin-bottom: 10px;
+  color: var(--text-dark);
+}
+
+.contact-info {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.contact-info p {
+  margin: 0;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .payment-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .qr-image-wrapper {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .payment-qr-page {
+    padding: 20px 0;
+  }
+  
+  .payment-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .qr-actions {
+    justify-content: center;
+  }
+  
+  .qr-instructions h3 {
+    font-size: 1.1rem;
+  }
+  
+  .instruction-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .step-number {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-image-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .payment-method-list {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .method-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .method-details h4 {
+    font-size: 1rem;
+  }
+}
+
+/* Responsive for max-width 579px */
+@media (max-width: 579px) {
+  .payment-qr-page {
+    padding: 20px 0;
+  }
+  
+  .payment-header {
+    padding: 0 15px;
+  }
+  
+  .payment-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .payment-layout {
+    padding: 0 15px;
+  }
+  
+  .qr-section,
+  .order-details {
+    padding: 20px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .qr-image-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .download-btn {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+  }
+  
+  .info-row {
+    padding: 12px 0;
+  }
+  
+  .info-label,
+  .info-value {
+    font-size: 0.95rem;
+  }
+  
+  .info-value.amount {
+    font-size: 1.1rem;
+  }
+}
+
+/* Responsive for max-width 390px */
+@media (max-width: 390px) {
+  .payment-qr-page {
+    padding: 15px 0;
+  }
+  
+  .payment-header {
+    padding: 0 10px;
+  }
+  
+  .payment-header h1 {
+    font-size: 1.4rem;
+  }
+  
+  .payment-layout {
+    padding: 0 10px;
+  }
+  
+  .qr-section,
+  .order-details {
+    padding: 15px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .qr-image-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .download-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .info-row {
+    padding: 10px 0;
+  }
+  
+  .info-label,
+  .info-value {
+    font-size: 0.9rem;
+  }
+  
+  .info-value.amount {
+    font-size: 1rem;
+  }
+  
+  .method-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .method-details h4 {
+    font-size: 0.95rem;
+  }
+}

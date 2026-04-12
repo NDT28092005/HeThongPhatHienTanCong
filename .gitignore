@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+/dist
+/build
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Cache and logs
+*.log
+storage/framework/cache/*
+storage/logs/*
+bootstrap/cache/*.php
+!storage/framework/cache/.gitkeep
+!storage/logs/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Composer
+composer.phar
+
+# Vite build
+frontend/dist/

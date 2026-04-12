@@ -1,0 +1,191 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Cart;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class OrderController extends Controller
+{
+    // ✅ USER — Bấm checkout tạo đơn hàng & chuyển sang thanh toán
+    public function checkout(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required',
+            'customer_phone' => 'required',
+            'customer_address' => 'required',
+            'payment_method' => 'required|in:cod,qr'
+        ]);
+
+        $user = auth()->user();
+
+        $cart = Cart::where('user_id', $user->id)->with('items.product')->first();
+        if (!$cart || $cart->items->isEmpty()) {
+            return response()->json(['message' => 'Giỏ hàng trống'], 400);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // ✅ tạo order
+            $order = Order::create([
+                'user_id' => $user->id,
+                'customer_name' => $request->customer_name,
+                'customer_phone' => $request->customer_phone,
+                'customer_address' => $request->customer_address,
+                'total_price' => $cart->items->sum(fn($i) => $i->quantity * $i->product->price),
+                'status' => $request->payment_method === 'qr'
+                    ? 'waiting_payment'
+                    : 'pending'
+            ]);
+
+            // ✅ lưu các item vào order_items
+            foreach ($cart->items as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'price' => $item->product->price,
+                    'quantity' => $item->quantity,
+                    'status' => 'active', // Đảm bảo status được set rõ ràng
+                ]);
+            }
+
+            // ✅ XÓA GIỎ HÀNG
+            $cart->items()->delete();
+            $cart->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Tạo đơn hàng thành công',
+                'order_id' => $order->id,
+                'status' => $order->status
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ✅ USER — xem danh sách đơn hàng của mình
+    public function myOrders(Request $request)
+    {
+        $orders = Order::with(['items.product', 'user'])
+            ->where("user_id", auth()->id())
+            ->orderBy("created_at", "desc")
+            ->get();
+
+        return response()->json($orders);
+    }
+
+    // ✅ ADMIN — danh sách đơn hàng
+    public function index(Request $request)
+    {
+        $status = $request->status; // filter theo trạng thái
+
+        return Order::with('user')
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    // ✅ ADMIN — chi tiết 1 đơn hàng
+    public function show($id)
+    {
+        return Order::with(['items.product', 'user'])->findOrFail($id);
+    }
+
+    // ✅ ADMIN — thay đổi trạng thái đơn hàng
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            "status" => "required|in:pending,processing,paid,completed,cancelled"
+        ]);
+
+        $order->update(["status" => $request->status]);
+
+        return response()->json(["message" => "Cập nhật trạng thái thành công"]);
+    }
+
+    // ✅ USER — hủy sản phẩm trong đơn hàng
+    public function cancelOrderItem($orderId, $itemId)
+    {
+        $user = auth()->user();
+
+        // Kiểm tra đơn hàng thuộc về user
+        $order = Order::where('id', $orderId)
+            ->where('user_id', $user->id)
+            ->with('items')
+            ->firstOrFail();
+
+        // Kiểm tra trạng thái đơn hàng - chỉ cho phép hủy nếu chưa hoàn thành
+        if (in_array($order->status, ['completed', 'cancelled', 'delivered'])) {
+            return response()->json([
+                'message' => 'Không thể hủy sản phẩm trong đơn hàng đã hoàn thành hoặc đã hủy'
+            ], 400);
+        }
+
+        // Tìm item trong đơn hàng
+        $item = $order->items()->where('id', $itemId)->firstOrFail();
+
+        // Kiểm tra item chưa bị hủy
+        if ($item->status === 'cancelled') {
+            return response()->json([
+                'message' => 'Sản phẩm này đã được hủy trước đó'
+            ], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Cập nhật trạng thái item thành cancelled
+            $item->update(['status' => 'cancelled']);
+
+            // Refresh order để đảm bảo có dữ liệu mới nhất
+            $order->refresh();
+            $order->load('items');
+
+            // Tính lại tổng tiền đơn hàng (tính tất cả items trừ những items đã cancelled)
+            // Bao gồm cả items có status NULL (cho tương thích với dữ liệu cũ)
+            $activeItems = $order->items()
+                ->where(function($query) {
+                    $query->whereNotIn('status', ['cancelled'])
+                          ->orWhereNull('status');
+                })
+                ->get();
+            $newTotal = $activeItems->sum(fn($i) => $i->price * $i->quantity);
+            
+            $order->update(['total_price' => $newTotal]);
+
+            // Nếu tất cả items đều bị hủy, cập nhật trạng thái đơn hàng
+            $activeItemsCount = $order->items()
+                ->where(function($query) {
+                    $query->whereNotIn('status', ['cancelled'])
+                          ->orWhereNull('status');
+                })
+                ->count();
+            if ($activeItemsCount === 0) {
+                $order->update(['status' => 'cancelled']);
+            }
+
+            DB::commit();
+
+            // Load lại order với items để trả về
+            $order->refresh();
+            $order->load(['items.product']);
+
+            return response()->json([
+                'message' => 'Hủy sản phẩm thành công',
+                'order' => $order
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Có lỗi xảy ra: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+}

@@ -9,8 +9,8 @@ class IsAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
-        if ($user && ($user->role === 'admin' || clone $user->hasRole('admin'))) {
+        $user = $request->user();
+        if ($user && ($user->role === 'admin' || $user->hasRole('admin'))) {
             return $next($request);
         }
 

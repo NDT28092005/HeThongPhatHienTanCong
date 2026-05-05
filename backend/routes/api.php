@@ -20,21 +20,28 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\HomeApiController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\CheckoutController;
+use App\Http\Controllers\Api\SecurityController;
 use App\Http\Controllers\NewsletterController;
 
+// ✅ CORS Preflight Handler - phải đặt ở đầu tiên
+Route::options('{any}', function () {
+    $allowedOrigins = config('cors.allowed_origins', [env('CORS_ALLOWED_ORIGIN', 'http://localhost:5173')]);
+    $origin = request()->headers->get('Origin', '');
+    $effectiveOrigin = in_array($origin, $allowedOrigins, true) ? $origin : ($allowedOrigins[0] ?? '*');
 
-Route::delete('/cart/clear-cart', [CheckoutController::class, 'clearCart'])
-    ->middleware('auth:sanctum');
-Route::post('/payment-success', [CheckoutController::class, 'paymentSuccess']);
-Route::post('/checkout', [CheckoutController::class, 'checkout']);
-Route::get('/orders', [OrderController::class, 'myOrders'])
-    ->middleware('auth:sanctum');
-// Đặt route cụ thể hơn trước để tránh conflict
-Route::put('/orders/{orderId}/items/{itemId}/cancel', [OrderController::class, 'cancelOrderItem'])
-    ->middleware('auth:sanctum');
-Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
-    ->middleware('auth:sanctum');
+    return response('', 200)
+        ->header('Access-Control-Allow-Origin', $effectiveOrigin)
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-CSRF-TOKEN')
+        ->header('Access-Control-Max-Age', '86400');
+})->where('any', '.*');
+
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::delete('/cart/clear-cart', [CheckoutController::class, 'clearCart']);
+    Route::get('/orders', [OrderController::class, 'myOrders']);
+    Route::put('/orders/{orderId}/items/{itemId}/cancel', [OrderController::class, 'cancelOrderItem']);
+    Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::post('/checkout', [CheckoutController::class, 'checkout']);
     Route::get('/cart', [CartController::class, 'getCart']);
     Route::post('/cart/add', [CartController::class, 'addToCart']);
@@ -43,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/cart/clear', [CartController::class, 'clearCart']);
     Route::post('/reviews', [ProductReviewController::class, 'store']);
 });
+Route::post('/payment-success', [CheckoutController::class, 'paymentSuccess']);
 Route::get('/products/{id}/reviews', [ProductReviewController::class, 'listByProduct']);
 Route::post('/admin/reviews', [ProductReviewController::class, 'adminCreate']);
 Route::prefix('admin/orders')->group(function () {
@@ -75,6 +83,9 @@ Route::apiResource('orders', OrderController::class)->only(['index', 'store']);
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index']);
+    Route::get('/admin/security/model-preference', [SecurityController::class, 'getModelPreference']);
+    Route::post('/admin/security/model-preference', [SecurityController::class, 'setModelPreference']);
+    Route::get('/admin/security/logs', [SecurityController::class, 'getLogs']);
 });
 Route::middleware('auth:sanctum')->get('/admin/me', [AdminAuthController::class, 'me']);
 // -------------------------

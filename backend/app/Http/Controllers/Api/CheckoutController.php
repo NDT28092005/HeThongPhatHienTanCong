@@ -13,6 +13,10 @@ use App\Models\CartItem;
 
 class CheckoutController extends Controller
 {
+    private const FREE_SHIPPING_THRESHOLD = 500000;
+    private const SHIPPING_FEE = 30000;
+    private const BANK_PAYMENT_EXPIRY_MINUTES = 3;
+
     public function checkout(Request $request)
     {
         $user = auth()->user();
@@ -29,27 +33,27 @@ class CheckoutController extends Controller
         }
 
         $request->validate([
-            "customer_name" => "required",
-            "customer_phone" => "required",
-            "customer_address" => "required"
+            "customer_name" => "required|string|max:255",
+            "customer_phone" => "required|string|max:20",
+            "customer_address" => "required|string|max:500"
         ]);
 
         DB::beginTransaction();
         try {
             $subtotal = $cart->items->sum(fn($item) => $item->quantity * $item->price_at_time);
 
-            $shipping = $subtotal >= 500000 ? 0 : 30000;
+            $shipping = $subtotal >= self::FREE_SHIPPING_THRESHOLD ? 0 : self::SHIPPING_FEE;
 
             $order = Order::create([
                 "order_code" => "ORDER-" . strtoupper(Str::random(8)),
                 "user_id" => $user->id,
-                "customer_name" => $request->customer_name,
-                "customer_phone" => $request->customer_phone,
-                "customer_address" => $request->customer_address,
+                "customer_name" => strip_tags($request->customer_name),
+                "customer_phone" => strip_tags($request->customer_phone),
+                "customer_address" => strip_tags($request->customer_address),
                 "payment_method" => $request->payment_method,
                 "total_price" => $subtotal + $shipping,
                 "status" => "pending",
-                'expires_at' => $request->payment_method === "bank" ? now()->addMinutes(3) : null,
+                'expires_at' => $request->payment_method === "bank" ? now()->addMinutes(self::BANK_PAYMENT_EXPIRY_MINUTES) : null,
             ]);
 
             foreach ($cart->items as $item) {
@@ -84,15 +88,25 @@ class CheckoutController extends Controller
     }
     public function paymentSuccess(Request $request)
     {
+        $request->validate([
+            'order_id' => 'required|integer|exists:orders,id',
+        ]);
+
         $user = auth()->user();
         if (!$user) {
             return response()->json(["error" => "Unauthorized"], 401);
         }
 
-        // Update order status
-        Order::where("id", $request->order_id)
+        $order = Order::where("id", $request->order_id)
+            ->where("user_id", $user->id)
             ->where("status", "pending")
-            ->update(["status" => "paid"]);
+            ->first();
+
+        if (!$order) {
+            return response()->json(["error" => "Đơn hàng không hợp lệ"], 400);
+        }
+
+        $order->update(["status" => "paid"]);
 
         return response()->json(["message" => "Cập nhật thanh toán thành công"]);
     }

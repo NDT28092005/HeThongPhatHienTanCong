@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('ip_address')->nullable();
             $table->string('url')->nullable();
+            $table->string('method', 10)->nullable();
+            $table->string('model_used', 50)->nullable();
+            $table->float('confidence')->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
         });

@@ -91,6 +91,12 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
+        if ($category->products()->exists()) {
+            return response()->json([
+                'message' => 'Không thể xóa danh mục đã có sản phẩm'
+            ], 422);
+        }
+
         if ($category->image_url) {
             $oldImage = str_replace(asset('storage') . '/', '', $category->image_url);
             Storage::disk('public')->delete($oldImage);

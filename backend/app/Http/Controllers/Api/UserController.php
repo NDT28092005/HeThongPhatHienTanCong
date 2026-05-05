@@ -26,31 +26,33 @@ class UserController extends Controller
 
     public function create()
     {
-        return response()->json(['message' => 'Create user']);
+        return response()->json(['error' => 'Method not available via API'], 405);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required',
+            'name'  => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
 
-        User::create([
+        $user = User::create([
             'name'  => $request->name,
             'email' => $request->email,
             'google_id' => $request->google_id,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Thêm người dùng thành công');
+        return response()->json([
+            'message' => 'Thêm người dùng thành công',
+            'user' => $user
+        ], 201);
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        return response()->json(['error' => 'Method not available via API'], 405);
     }
 
     public function update(Request $request, $id)
@@ -112,7 +114,9 @@ class UserController extends Controller
     }
     public function destroy($id)
     {
-        User::destroy($id);
-        return back()->with('success', 'Xóa thành công');
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'Xóa người dùng thành công']);
     }
 }

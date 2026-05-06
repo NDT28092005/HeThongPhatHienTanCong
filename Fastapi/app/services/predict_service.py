@@ -12,8 +12,16 @@ from feature_extractor import extract_features
 EXPORTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "exports")
 
 LABEL_MAP = {
-    "Normal": "normal",
+    # Note: label_encoder.classes_ is [0.0, 1.0] (numpy floats), not strings.
+    # Class 0 → Normal (benign), Class 1 → Anomalous (attack).
+    0.0: "normal",
+    1.0: "attack",
+    # String keys retained for safety in case inverse_transform returns strings
+    # in some versions / loading paths.
+    "Normal":    "normal",
     "Anomalous": "attack",
+    0:   "normal",
+    1:   "attack",
 }
 
 MODEL_ALIASES = {
@@ -100,6 +108,7 @@ def _resolve_model(model_key: str) -> str:
     return MODEL_ALIASES.get(key, DEFAULT_MODEL)
 
 
+# Model expects these 28 features in this exact order
 MODEL_FEATURE_ORDER = [
     "count_dot_url",
     "count_dir_url",
@@ -131,26 +140,30 @@ MODEL_FEATURE_ORDER = [
     "special_count_content",
 ]
 
-URL_FEATURES = MODEL_FEATURE_ORDER[:18]
-CONTENT_FEATURES = MODEL_FEATURE_ORDER[18:]
-
 
 def _extract_features_from_url(url: str, content: str | None) -> pd.DataFrame:
-    df = pd.DataFrame([{"URL": url, "content": content}])
-    df_features = extract_features(df)
+    """
+    Extract features and align to exactly what the models expect.
+    Model expects 28 features in MODEL_FEATURE_ORDER.
+    """
+    # Get features from the extractor
+    df_in = pd.DataFrame([{"URL": url, "content": content}])
+    df_fe = extract_features(df_in)
 
-    available = set(df_features.columns) - {"URL", "content"}
-
+    # Build a complete feature vector with ALL model-expected features
     result = {}
     for feat in MODEL_FEATURE_ORDER:
         if feat == "Method_enc":
+            # HTTP method encoding - we don't have this from the extractor
+            # so we hardcode it as 0 (GET/POST encoded separately in production)
             result[feat] = 0
-        elif feat in available:
-            result[feat] = df_features[feat].iloc[0]
+        elif feat in df_fe.columns:
+            result[feat] = df_fe[feat].iloc[0]
         else:
             result[feat] = 0
 
-    return pd.DataFrame([result])
+    # Return DataFrame with columns in exact MODEL_FEATURE_ORDER
+    return pd.DataFrame([result])[MODEL_FEATURE_ORDER]
 
 
 def predict(url: str, content: str | None, model_preference: str = DEFAULT_MODEL) -> dict:
@@ -173,9 +186,9 @@ def predict(url: str, content: str | None, model_preference: str = DEFAULT_MODEL
     except (AttributeError, TypeError):
         confidence = 1.0
 
-    label_str = _loader.le.inverse_transform([prediction_num])[0]
+    label_str = _loader.le.inverse_transform([int(prediction_num)])[0]
 
-    status = LABEL_MAP.get(label_str, "normal")
+    status = LABEL_MAP.get(float(label_str), LABEL_MAP.get(label_str, "normal"))
 
     return {
         "status": status,
